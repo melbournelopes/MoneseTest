@@ -8,15 +8,18 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.TextView
 import com.demo.monesespecex.R
 import com.demo.monesespecex.activities.RocketDetailsActivity
 import com.demo.monesespecex.models.MainRocketModel
 import com.demo.monesespecex.utilities.AppConstants
 
+
 open class RocketsAdapter(context: Activity, mainRocketModelList: List<MainRocketModel>) : RecyclerView.Adapter<RocketsAdapter.RocketViewHolder>(), View.OnClickListener {
     private var context: Activity = context
     private var mainRocketModelList: List<MainRocketModel> = mainRocketModelList
+    private var lastPosition = -1
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RocketsAdapter.RocketViewHolder {
         val v = LayoutInflater.from(context).inflate(R.layout.rockets_item_row, parent, false)
@@ -29,6 +32,8 @@ open class RocketsAdapter(context: Activity, mainRocketModelList: List<MainRocke
         holder.lblType.text = "" + mainRocketModel.rocket.rocket_name
         holder.cardRocket.tag = position
         holder.cardRocket.setOnClickListener(this)
+
+        setAnimation(holder.itemView, position);
     }
 
     override fun onClick(v: View?) {
@@ -47,6 +52,14 @@ open class RocketsAdapter(context: Activity, mainRocketModelList: List<MainRocke
 
     override fun getItemCount(): Int {
         return mainRocketModelList.size
+    }
+
+    private fun setAnimation(viewToAnimate: View, position: Int) {
+        if (position > lastPosition) {
+            val animation = AnimationUtils.loadAnimation(context, android.R.anim.slide_in_left)
+            viewToAnimate.startAnimation(animation)
+            lastPosition = position
+        }
     }
 
     class RocketViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

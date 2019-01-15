@@ -21,5 +21,7 @@ open class RocketDetailsActivity : BaseActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         mToolbar?.setNavigationIcon(R.drawable.abc_ic_ab_back_material)
+
+        mToolbar.setNavigationOnClickListener { onBackPressed() }
     }
 }
