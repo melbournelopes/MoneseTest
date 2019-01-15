@@ -14,6 +14,7 @@ import com.demo.monesespecex.R
 import com.demo.monesespecex.activities.RocketDetailsActivity
 import com.demo.monesespecex.models.MainRocketModel
 import com.demo.monesespecex.utilities.AppConstants
+import com.demo.monesespecex.utilities.Utils
 
 
 open class RocketsAdapter(context: Activity, mainRocketModelList: List<MainRocketModel>) : RecyclerView.Adapter<RocketsAdapter.RocketViewHolder>(), View.OnClickListener {
@@ -29,7 +30,8 @@ open class RocketsAdapter(context: Activity, mainRocketModelList: List<MainRocke
     override fun onBindViewHolder(holder: RocketsAdapter.RocketViewHolder, position: Int) {
         val mainRocketModel = mainRocketModelList[position]
         holder.lblTitle.text = "" + mainRocketModel.rocket.rocket_name
-        holder.lblType.text = "" + mainRocketModel.rocket.rocket_name
+        holder.lblFlightNumber.text = context.getString(R.string.flight_number)+" - " + mainRocketModel.flight_number
+        holder.lblLaunchDate.text = context.getString(R.string.launch_date)+" - " + Utils.convertTimestampToDate(mainRocketModel.launch_date_unix)
         holder.cardRocket.tag = position
         holder.cardRocket.setOnClickListener(this)
 
@@ -65,6 +67,7 @@ open class RocketsAdapter(context: Activity, mainRocketModelList: List<MainRocke
     class RocketViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var cardRocket: CardView = itemView.findViewById(R.id.cardRocket)
         var lblTitle: TextView = itemView.findViewById(R.id.lblTitle)
-        var lblType: TextView = itemView.findViewById(R.id.lblType)
+        var lblFlightNumber: TextView = itemView.findViewById(R.id.lblFlightNumber)
+        var lblLaunchDate: TextView = itemView.findViewById(R.id.lblLaunchDate)
     }
 }

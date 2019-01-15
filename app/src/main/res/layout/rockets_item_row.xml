@@ -19,9 +19,15 @@
             android:layout_height="wrap_content" />
 
         <TextView
-            android:id="@+id/lblType"
+            android:id="@+id/lblFlightNumber"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/lblTitle" />
+
+        <TextView
+            android:id="@+id/lblLaunchDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lblFlightNumber" />
     </RelativeLayout>
 </android.support.v7.widget.CardView>
