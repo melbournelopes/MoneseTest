@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">MoneseSpeceX</string>
+    <string name="please_wait">Please wait...</string>
+    <string name="connectivity_issue">Connectivity issue</string>
+    <string name="check_internet_msg">Check internet connection</string>
+    <string name="rocket_name">Rocket Name</string>
+    <string name="flight_number">Flight Number</string>
+    <string name="mission_name">Mission Name</string>
+    <string name="launch_year">Launch Year</string>
+    <string name="launch_date">Launch Date</string>
+
+</resources>
