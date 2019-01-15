@@ -9,16 +9,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Spinner
-import android.widget.Toast
+import android.widget.*
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.demo.monesespecex.App
 import com.demo.monesespecex.R
 import com.demo.monesespecex.adapters.RocketsAdapter
+import com.demo.monesespecex.customviews.ButteryProgressBar
 import com.demo.monesespecex.models.MainRocketModel
 import com.demo.monesespecex.utilities.AppConstants
 import com.demo.monesespecex.utilities.PreferenceUtils
@@ -32,12 +30,15 @@ open class HomeFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
     private val OFFSET = 50
     private val LIMIT = 50
     private lateinit var rvRockets: RecyclerView
-    private lateinit var pDialog: ProgressDialog
     private lateinit var spnFilter: Spinner
+    private lateinit var butteryProgressBar: ButteryProgressBar
+    private lateinit var rocketAdapter: RocketsAdapter
+    private lateinit var rocketModelList: Array<MainRocketModel>
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater?.inflate(R.layout.fragment_home, container, false)
         init(view!!)
+        loadCachedData()
         getRocketsDatails()
 
         return view
@@ -53,35 +54,43 @@ open class HomeFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
 
     override fun onNothingSelected(p0: AdapterView<*>?) {}
 
+    private fun loadCachedData(){
+        if(PreferenceUtils.contains(PreferenceUtils.PREF_KEYS_ROCKET_RESPONSE)) {
+            rocketModelList= PreferenceUtils.getObject(PreferenceUtils.PREF_KEYS_ROCKET_RESPONSE, Array<MainRocketModel>::class.java) as Array<MainRocketModel>
+            rocketAdapter = RocketsAdapter(activity, rocketModelList)
+            rvRockets.adapter = rocketAdapter
+        }
+    }
+
     private fun getRocketsDatails() {
-        pDialog?.show()
+        butteryProgressBar.visibility = View.VISIBLE
         val getCompany = AppConstants.BASE_URL + "?offset=" + OFFSET + "&limit=" + LIMIT
         Log.d("spaceX request", getCompany)
         if (Utils.isNetworkAvailable(activity)) {
             val stringRequest = StringRequest(Request.Method.GET,
                     getCompany,
                     Response.Listener { response ->
-                        pDialog?.dismiss()
+                        butteryProgressBar.visibility = View.GONE
                         Log.d("spaceX response", response)
                         try {
                             val jsonArray = JSONArray(response)
                             val gson = Gson()
-                            val listType = object : TypeToken<List<MainRocketModel>>() {
+                            val listType = object : TypeToken<Array<MainRocketModel>>() {
 
                             }.type
-                            var rocketModelList = gson.fromJson<List<MainRocketModel>>(jsonArray.toString(), listType)
+                            var rocketModelList = gson.fromJson<Array<MainRocketModel>>(jsonArray.toString(), listType)
                             if (rocketModelList != null && rocketModelList.size > 0) {
-                                val adapter = RocketsAdapter(activity, rocketModelList)
-                                rvRockets.adapter = adapter
                                 loadFilter()
+                                /**Caching response for future use*/
                                 PreferenceUtils.insertObject(PreferenceUtils.PREF_KEYS_ROCKET_RESPONSE, rocketModelList)
+                                loadCachedData()
                             }
 
                         } catch (e: JSONException) {
                             e.printStackTrace()
                         }
                     }, Response.ErrorListener {
-                pDialog?.dismiss()
+                butteryProgressBar.visibility = View.GONE
                 Toast.makeText(activity, "" + getString(R.string.connectivity_issue), Toast.LENGTH_SHORT).show()
             }
             )
@@ -105,9 +114,8 @@ open class HomeFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
         rvRockets = view?.findViewById(R.id.rvRockets)
         rvRockets.layoutManager = LinearLayoutManager(activity)
 
-        pDialog = ProgressDialog(activity)
-        pDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        pDialog.setCancelable(false)
-        pDialog.setMessage("" + getString(R.string.please_wait))
+        butteryProgressBar = view?.findViewById(R.id.butteryProgressBar)
+        butteryProgressBar.layoutParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT)
+        butteryProgressBar.visibility = View.GONE
     }
 }

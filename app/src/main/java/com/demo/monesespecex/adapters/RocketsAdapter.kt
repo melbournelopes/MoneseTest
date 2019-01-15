@@ -17,9 +17,9 @@ import com.demo.monesespecex.utilities.AppConstants
 import com.demo.monesespecex.utilities.Utils
 
 
-open class RocketsAdapter(context: Activity, mainRocketModelList: List<MainRocketModel>) : RecyclerView.Adapter<RocketsAdapter.RocketViewHolder>(), View.OnClickListener {
+open class RocketsAdapter(context: Activity, mainRocketModelList: Array<MainRocketModel>) : RecyclerView.Adapter<RocketsAdapter.RocketViewHolder>(), View.OnClickListener {
     private var context: Activity = context
-    private var mainRocketModelList: List<MainRocketModel> = mainRocketModelList
+    private var mainRocketModelList: Array<MainRocketModel> = mainRocketModelList
     private var lastPosition = -1
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RocketsAdapter.RocketViewHolder {

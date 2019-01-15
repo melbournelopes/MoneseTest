@@ -15,7 +15,8 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         init()
-        showWelcome()
+        replaceFragment(R.id.frmMain, HomeFragment(), "HomeFragment", false, null)
+//        showWelcome()
     }
 
     private fun showWelcome() {
@@ -23,7 +24,7 @@ class MainActivity : BaseActivity() {
                 .setMessage(getString(R.string.welcome_msg))
                 .setPositiveButton(getString(R.string.enter), DialogInterface.OnClickListener {
                     dialog, arg1 -> dialog.dismiss()
-                    replaceFragment(R.id.frmMain, HomeFragment(), "HomeFragment", false, null)
+//                    replaceFragment(R.id.frmMain, HomeFragment(), "HomeFragment", false, null)
                 })
                 .setCancelable(false)
                 .create().show()
