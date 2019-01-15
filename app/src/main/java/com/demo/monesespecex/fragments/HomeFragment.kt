@@ -9,6 +9,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.Response
@@ -25,11 +28,12 @@ import com.google.gson.reflect.TypeToken
 import org.json.JSONArray
 import org.json.JSONException
 
-open class HomeFragment : BaseFragment() {
+open class HomeFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
     private val OFFSET = 50
     private val LIMIT = 50
     private lateinit var rvRockets: RecyclerView
     private lateinit var pDialog: ProgressDialog
+    private lateinit var spnFilter: Spinner
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater?.inflate(R.layout.fragment_home, container, false)
@@ -38,6 +42,16 @@ open class HomeFragment : BaseFragment() {
 
         return view
     }
+
+    override fun onItemSelected(p0: AdapterView<*>?, p1: View?, pos: Int, p3: Long) {
+        when(pos){
+            0 -> Toast.makeText(activity, "All filter coming soon", Toast.LENGTH_SHORT).show()
+            1 -> Toast.makeText(activity, "Active filter coming soon", Toast.LENGTH_SHORT).show()
+            2 -> Toast.makeText(activity, "Inactive filter coming soon", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun onNothingSelected(p0: AdapterView<*>?) {}
 
     private fun getRocketsDatails() {
         pDialog?.show()
@@ -59,6 +73,7 @@ open class HomeFragment : BaseFragment() {
                             if (rocketModelList != null && rocketModelList.size > 0) {
                                 val adapter = RocketsAdapter(activity, rocketModelList)
                                 rvRockets.adapter = adapter
+                                loadFilter()
                                 PreferenceUtils.insertObject(PreferenceUtils.PREF_KEYS_ROCKET_RESPONSE, rocketModelList)
                             }
 
@@ -76,7 +91,17 @@ open class HomeFragment : BaseFragment() {
         }
     }
 
+    private fun loadFilter(){
+        val adapter = ArrayAdapter<String>(
+                activity,
+                android.R.layout.simple_list_item_1,
+                resources.getStringArray(R.array.ar_rocket_status))
+        spnFilter.adapter = adapter
+        spnFilter.onItemSelectedListener = this
+    }
+
     private fun init(view: View) {
+        spnFilter = view?.findViewById(R.id.spnFilter)
         rvRockets = view?.findViewById(R.id.rvRockets)
         rvRockets.layoutManager = LinearLayoutManager(activity)
 
