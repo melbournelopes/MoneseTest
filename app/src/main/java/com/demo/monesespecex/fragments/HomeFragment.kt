@@ -115,7 +115,5 @@ open class HomeFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
         rvRockets.layoutManager = LinearLayoutManager(activity)
 
         butteryProgressBar = view?.findViewById(R.id.butteryProgressBar)
-        butteryProgressBar.layoutParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT)
-        butteryProgressBar.visibility = View.GONE
     }
 }

@@ -8,13 +8,12 @@
         android:id="@+id/butteryProgressBar"
         style="@style/ProgressBar.Horizontal.Indeterminate"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/buttery_progressbar_height"
         android:visibility="gone" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:padding="5dp"
         android:layout_below="@+id/butteryProgressBar">
 
