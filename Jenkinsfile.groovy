@@ -1,6 +1,6 @@
 node {
     stage('FETCH'){
-        git url: 'https://github.com/melbournelopes/MoneseTest.git'    
+        //git url: 'https://github.com/melbournelopes/MoneseTest.git'    
     }
    stage('BUILD'){
         if (isUnix()) {
