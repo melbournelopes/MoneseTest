@@ -3,6 +3,7 @@ node {
         git url: 'https://github.com/melbournelopes/MoneseTest.git'    
     }
    stage('BUILD'){
+       //Building apk
         if (isUnix()) {
             sh './gradlew clean build'
         } else {
