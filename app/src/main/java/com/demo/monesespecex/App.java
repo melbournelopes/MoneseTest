@@ -14,7 +14,6 @@ public class App extends Application {
         super.onCreate();
         appInstance=this;
 		
-		
     }
 
     public RequestQueue getVolleyRequestQueue() {
