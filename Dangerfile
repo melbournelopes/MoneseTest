@@ -11,7 +11,7 @@ if git.modified_files.empty? && git.added_files.empty? && git.deleted_files.empt
 end
 
 # Dont allow specific file to be deleted
-if git.deleted_files.include? "manifest.xml"
+if git.deleted_files.include? "*/AndroidManifest.xml"
 	fail "You have deleted a file which you are not supposed to delete."
 end
 
