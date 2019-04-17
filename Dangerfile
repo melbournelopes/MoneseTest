@@ -5,12 +5,21 @@ declared_trivial = github.pr_title.include? "#trivial"
 # Make it more obvious that a PR is a work in progress and shouldn't be merged yet
 warn("PR is classed as Work in Progress") if github.pr_title.include? "[WIP]"
 
-# Warn when there is a big PR
-warn("SUCCESS") if git.lines_of_code > 5 
+# If these are all empty something has gone wrong, better to raise it in a comment
+if git.modified_files.empty? && git.added_files.empty? && git.deleted_files.empty?
+  fail "This PR has no changes at all, this is likely an issue during development."
+end
+
+# Dont allow specific file to be deleted
+if git.deleted_files.include? "manifest.xml"
+	fail "You have deleted a file which you are not supposed to delete."
+end
+
+# If more then 10 files gets deleted.
+warn("More then 10 files deleted file ") if git.deleted_files.length > 10
 
 # Warn when there is a big PR
-warn("FAILED") if git.lines_of_code < 5 
+warn("Big PR") if git.lines_of_code > 500 
 
-# Don't let testing shortcuts get into master by accident
-#fail("fdescribe left in tests") if `grep -r fdescribe specs/ `.length > 1
-#fail("fit left in tests") if `grep -r fit specs/ `.length > 1
+# Warn when there is a big PR
+warn("Small PR") if git.lines_of_code < 500 
